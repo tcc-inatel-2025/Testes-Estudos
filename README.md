@@ -1,40 +1,92 @@
 # Testes-Estudos
-Repositorio para codigos gerados para estudos durante o TCC
 
-___
+Repositório com códigos gerados para estudos durante o TCC.
 
-# 1 Testes com pylint 
+---
 
-Para a primeira metrica temos o pylint adicionei 2 exemplos de codigos diferentes 1 com nota 10 no pylint e outro com uma nota mediana. 
+## 🟢 Testes com **Pylint**
 
-Pylint pode ser instalado usando pip e chamado no env como:
-**pylint file.py** 
-retornando um score de 0/10 
+Pylint é usado para análise de qualidade do código Python.
 
-# 2 Testes con radon 
-Pode ser instalado da mesma forma pip install radon. 
-E chamado via linha de comando como:
-**radon cc good.py -a**
-retorna o score da complexidade do script na seguinte avaliacao: 
+- Instalação:
 
-A (1–5)
-B (6–10)
-C (11–20)
-D (21–30)
-E (31–40)
-F (>40)
-
-ou seja quanto menor o resultado melhor, podemos normalizar a escala para nosso trabalho da seguinte forma: 
-
-``` Python
-    def normalize_radon_complexity(grade):
-        scale = {'A': 1.0, 'B': 0.85, 'C': 0.7, 'D': 0.55, 'E': 0.4, 'F': 0.2}
-    return scale.get(grade, 0.0)
-
-    print(normalize_radon_complexity("A"))  # 1.0
+```bash
+pip install pylint
 ```
 
-# 3 PoE na pratica
+- Uso:
 
-usando o arquivo bad.py como exemplo o score(ou expert) do pylint retorna um score de 6.67/10 (0.667/1)
-e o score do radon A (1.0) podemos aplicar o Poe nesse caso apenas multiplicando os resultados, conseguindo um score unificado final de 0.667
+```bash
+pylint file.py
+```
+
+- Retorna uma pontuação de 0 a 10.
+
+| Arquivo    | Pylint Score | Badge |
+|------------|-------------|-------|
+| `good.py`  | 10/10       | ![10/10](https://img.shields.io/badge/Pylint-10/10-brightgreen) |
+| `bad.py`   | 6.67/10     | ![6.67/10](https://img.shields.io/badge/Pylint-6.67/10-yellow) |
+
+---
+
+## 🔵 Testes com **Radon**
+
+Radon avalia a **complexidade ciclomática** do código.
+
+- Instalação:
+
+```bash
+pip install radon
+```
+
+- Uso:
+
+```bash
+radon cc good.py -a
+```
+
+- Classificação de complexidade:
+
+| Nota | Complexidade | Normalizado |
+|------|-------------|-------------|
+| A    | 1–5         | 1.0         |
+| B    | 6–10        | 0.85        |
+| C    | 11–20       | 0.7         |
+| D    | 21–30       | 0.55        |
+| E    | 31–40       | 0.4         |
+| F    | >40         | 0.2         |
+
+Exemplo de normalização:
+
+```python
+def normalize_radon_complexity(grade):
+    scale = {'A': 1.0, 'B': 0.85, 'C': 0.7, 'D': 0.55, 'E': 0.4, 'F': 0.2}
+    return scale.get(grade, 0.0)
+
+print(normalize_radon_complexity("A"))  # 1.0
+```
+
+| Arquivo    | Radon Score | Normalizado | Badge |
+|------------|------------|-------------|-------|
+| `good.py`  | A          | 1.0         | ![A](https://img.shields.io/badge/Radon-A-brightgreen) |
+| `bad.py`   | A          | 1.0         | ![A](https://img.shields.io/badge/Radon-A-brightgreen) |
+
+---
+
+## ⚡ Aplicando **PoE** (Point of Evaluation)
+
+Para unir as métricas Pylint e Radon, multiplicamos os scores normalizados:
+
+```python
+pylint_score = 0.667  # normalizado 6.67/10
+radon_score = 1.0     # normalizado
+final_score = pylint_score * radon_score
+print(final_score)  # 0.667
+```
+
+| Arquivo    | Pylint | Radon | PoE Score | Badge |
+|------------|--------|-------|-----------|-------|
+| `good.py`  | 10/10  | A     | 1.0       | ![1.0](https://img.shields.io/badge/PoE-1.0-brightgreen) |
+| `bad.py`   | 6.67/10| A     | 0.667     | ![0.667](https://img.shields.io/badge/PoE-0.667-yellow) |
+
+> O **PoE Score** representa uma avaliação unificada da qualidade e complexidade do código.
